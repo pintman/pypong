@@ -20,6 +20,17 @@ class Sprite:
         th = threading.Thread(target=self._tick)
         th.start()
 
+    def ueberlappt_mit(self, anderer_sprite):
+        """Prüft, ob der Sprite mit dem anderen Sprite überlappt."""
+        raise NotImplementedError() # TODO
+        x_y_this = self.position()
+        x_y_that = anderer_sprite.position()
+
+        self.canvas.find_overlapping()
+
+    def position(self):
+        return self.canvas.coords(self.rect)
+
     def update(self):
         """Diese Methode muss von den ableitenden Klassen überschrieben werden.
         In jedem Zyklus wird sie einmal aufgerufen."""
@@ -49,8 +60,8 @@ class Schlaeger(Sprite):
 
 
 class Ball(Sprite):
-    def __init__(self, canvas):
-        super().__init__(canvas, (100, 100), (10, 10))
+    def __init__(self, canvas, position):
+        super().__init__(canvas, position, (10, 10))
         self.dir = (1, 0)
 
     def update(self):
@@ -68,7 +79,7 @@ class Pong:
         self.schlaeger_rechts = Schlaeger(self.canvas, (200, 10))
         self.schlaeger_rechts.start()
 
-        self.ball = Ball(self.canvas)
+        self.ball = Ball(self.canvas, (10, 100))
         self.ball.start()
 
         btn = tkinter.Button(self.fenster, text="^", command=self.btn_up_click)
