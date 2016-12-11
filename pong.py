@@ -12,7 +12,9 @@ class Sprite:
                                                  fill="black")
 
     def start(self):
-        """Starte den Sprite."""
+        """Starte den Sprite. In jedem Zyklus wird die update-Methode
+        aufgerufen. Hier muss der Sprite seine eigentliche Arbeit leisten."""
+
         self._tick()
 
     def _tick(self):
@@ -33,7 +35,8 @@ class Sprite:
 
     def update(self):
         """Diese Methode muss von den ableitenden Klassen überschrieben werden.
-        In jedem Zyklus wird sie einmal aufgerufen."""
+        Nach dem Aufruf von start, wird diese Methode in jedem Zyklus einmal
+        aufgerufen."""
 
         raise Exception("Muss überschrieben werden!")
 
