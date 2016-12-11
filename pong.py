@@ -1,4 +1,3 @@
-import threading
 import tkinter
 
 class Schlaeger:
@@ -13,7 +12,7 @@ class Schlaeger:
     def runter(self):
         self.canvas.move(self.rect, 0, +10) # move rectangle down
 
-class App:
+class Pong:
     def __init__(self):
         self.fenster = tkinter.Tk()
         self.canvas = tkinter.Canvas(self.fenster)
@@ -31,5 +30,5 @@ class App:
     def btn_up_click(self):
         self.schlaeger.hoch()
         
-app = App()
+pong = Pong()
 
