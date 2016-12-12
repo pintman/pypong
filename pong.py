@@ -130,8 +130,5 @@ class Pong:
 
         self.fenster.mainloop()
 
-    def btn_up_click(self):
-        self.schlaeger_links.hoch()
-
 if __name__ == "__main__":
     pong = Pong()
