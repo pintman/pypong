@@ -58,13 +58,36 @@ class Sprite:
 
         return breite, hoehe
 
+    def innerhalb_spielfeld(self):
+        """Prüft, ob der Sprite innerhalb des Spielfeldes ist."""
+        b, h = self.spielfeld_breite_hoehe()
+        x1, y1, x2, y2 = self.position()
+
+        return (0 <= x1 <= b and
+                0 <= y1 <= h and
+                0 <= x2 <= b and
+                0 <= y2 <= h)
+
 
 class Schlaeger(Sprite):
-    def __init__(self, canvas, position):
+    def __init__(self, canvas, ea_modul, position):
         super().__init__(canvas, position, (10, 50))
+        self.ea_modul = ea_modul
 
     def update(self):
-        pass
+        """Bewegt den Schläger hoch oder runter. Verlässt der Schläger hierbei
+        den sichtbaren Bereich, wird die Bewegung in der entgegen gesetzten
+        Richtung korrigiert."""
+
+        if self.ea_modul.taster_gedrueckt(0):
+            self.hoch()
+            if not self.innerhalb_spielfeld():
+                self.runter()
+
+        if self.ea_modul.taster_gedrueckt(1):
+            self.runter()
+            if not self.innerhalb_spielfeld():
+                self.hoch()
 
     def hoch(self):
         self.bewegen(0, -10)
@@ -102,21 +125,21 @@ class Ball(Sprite):
 
 
 class Pong:
-    def __init__(self, breite=300, hoehe=200):
+    def __init__(self, eamodul_links, eamodul_rechts, breite=300, hoehe=200):
         fenster = tkinter.Tk()
         canvas = tkinter.Canvas(fenster, width=breite, height=hoehe)
         canvas.pack()
 
-        schlaeger_links = Schlaeger(canvas, (0, hoehe/2))
+        schlaeger_links = Schlaeger(canvas, eamodul_links, (0, hoehe/2))
         schlaeger_links.start()
-        schlaeger_rechts = Schlaeger(canvas, (breite-10, hoehe/2))
+        schlaeger_rechts = Schlaeger(canvas, eamodul_rechts,
+                                     (breite-10, hoehe/2))
         schlaeger_rechts.start()
 
         ball = Ball(canvas, (breite/2, hoehe/2))
         ball.start()
 
-        btn = tkinter.Button(fenster, text="<- ^",
-                             command=schlaeger_links.hoch)
+        btn = tkinter.Button(fenster, text="<- ^", command=schlaeger_links.hoch)
         btn.pack()        
         btn = tkinter.Button(fenster, text="<- v",
                              command=schlaeger_links.runter)
@@ -131,5 +154,11 @@ class Pong:
 
         fenster.mainloop()
 
+
+def main():
+    eam_links = eapi.hw.EAModul()
+    eam_rechts = eapi.hw.EAModul()
+    pong = Pong(eamodul_links=eam_links, eamodul_rechts=eam_rechts)
+
 if __name__ == "__main__":
-    pong = Pong()
+    main()
