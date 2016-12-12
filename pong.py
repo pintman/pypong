@@ -1,6 +1,7 @@
 import tkinter
 import threading
 import random
+import eapi.hw
 
 
 class Sprite:
@@ -102,33 +103,33 @@ class Ball(Sprite):
 
 class Pong:
     def __init__(self, breite=300, hoehe=200):
-        self.fenster = tkinter.Tk()
-        self.canvas = tkinter.Canvas(self.fenster, width=breite, height=hoehe)
-        self.canvas.pack()
+        fenster = tkinter.Tk()
+        canvas = tkinter.Canvas(fenster, width=breite, height=hoehe)
+        canvas.pack()
 
-        self.schlaeger_links = Schlaeger(self.canvas, (0, hoehe/2))
-        self.schlaeger_links.start()
-        self.schlaeger_rechts = Schlaeger(self.canvas, (breite-10, hoehe/2))
-        self.schlaeger_rechts.start()
+        schlaeger_links = Schlaeger(canvas, (0, hoehe/2))
+        schlaeger_links.start()
+        schlaeger_rechts = Schlaeger(canvas, (breite-10, hoehe/2))
+        schlaeger_rechts.start()
 
-        self.ball = Ball(self.canvas, (breite/2, hoehe/2))
-        self.ball.start()
+        ball = Ball(canvas, (breite/2, hoehe/2))
+        ball.start()
 
-        btn = tkinter.Button(self.fenster, text="<- ^",
-                             command=self.schlaeger_links.hoch)
+        btn = tkinter.Button(fenster, text="<- ^",
+                             command=schlaeger_links.hoch)
         btn.pack()        
-        btn = tkinter.Button(self.fenster, text="<- v",
-                             command=self.schlaeger_links.runter)
+        btn = tkinter.Button(fenster, text="<- v",
+                             command=schlaeger_links.runter)
         btn.pack()        
 
-        btn = tkinter.Button(self.fenster, text="^ ->",
-                             command=self.schlaeger_rechts.hoch)
+        btn = tkinter.Button(fenster, text="^ ->",
+                             command=schlaeger_rechts.hoch)
         btn.pack()
-        btn = tkinter.Button(self.fenster, text="v ->",
-                             command=self.schlaeger_rechts.runter)
+        btn = tkinter.Button(fenster, text="v ->",
+                             command=schlaeger_rechts.runter)
         btn.pack()
 
-        self.fenster.mainloop()
+        fenster.mainloop()
 
 if __name__ == "__main__":
     pong = Pong()
