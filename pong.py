@@ -75,21 +75,21 @@ class Schlaeger(Sprite):
 class Ball(Sprite):
     def __init__(self, canvas, position):
         super().__init__(canvas, position, (10, 10))
-        self.dir = [1,
-                    # y-Komponente zufällig wählen
-                    random.randint(-100, 100) / 100
-                    ]
+        self.direction = [1,
+                          # y-Komponente zufällig wählen
+                          random.randint(-100, 100) / 100
+                          ]
 
     def update(self):
-        self.bewegen(self.dir[0], self.dir[1])
+        self.bewegen(self.direction[0], self.direction[1])
 
         if self._beruehrt_wand_oben_unten():
-            self.dir[1] *= -1
+            self.direction[1] *= -1
 
         elemente = self.finde_ueberlappung()
         if len(elemente) > 0:
-            self.dir[0] *= -1
-            self.dir[1] *= -1
+            self.direction[0] *= -1
+            self.direction[1] *= -1
 
     def _beruehrt_wand_oben_unten(self):
         breite, hoehe = self.spielfeld_breite_hoehe()
