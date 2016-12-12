@@ -10,6 +10,7 @@ class Sprite:
                                                  position[0] + width_height[0],
                                                  position[1] + width_height[1],
                                                  fill="black")
+        print("Sprite erstellt", self.rect)
 
     def start(self):
         """Starte den Sprite. In jedem Zyklus wird die update-Methode
@@ -22,15 +23,18 @@ class Sprite:
         th = threading.Thread(target=self._tick)
         th.start()
 
-    def ueberlappt_mit(self, anderer_sprite):
-        """Prüft, ob der Sprite mit dem anderen Sprite überlappt."""
-        raise NotImplementedError() # TODO
-        x_y_this = self.position()
-        x_y_that = anderer_sprite.position()
+    def finde_ueberlappung(self):
+        """Prüft, ob der Sprite mit anderen Sprites überlappt und gibt diese
+        zurück."""
 
-        self.canvas.find_overlapping()
+        coords = self.position()
+        elemente = self.canvas.find_overlapping(*coords)
+
+        # sich selbst von der Überlappung ausnehmen
+        return [e for e in elemente if e != self.rect]
 
     def position(self):
+        """Liefert die Koordinaten in Form von vier Punkten."""
         return self.canvas.coords(self.rect)
 
     def update(self):
@@ -44,7 +48,6 @@ class Sprite:
         """Bewege den Sprite um (delta_x, delta_y). Positive Werte bewegen nach
         rechts, negative Werte nach links."""
 
-        print(delta_x, delta_y)
         self.canvas.move(self.rect, delta_x, delta_y)
 
 
@@ -65,24 +68,30 @@ class Schlaeger(Sprite):
 class Ball(Sprite):
     def __init__(self, canvas, position):
         super().__init__(canvas, position, (10, 10))
-        self.dir = (1, 0)
+        self.dir = [1, 0]
 
     def update(self):
         self.bewegen(self.dir[0], self.dir[1])
 
+        elemente = self.finde_ueberlappung()
+        if len(elemente) > 0:
+            self.dir[0] *= -1
+
 
 class Pong:
-    def __init__(self):
+    def __init__(self, breite=300, hoehe=200):
         self.fenster = tkinter.Tk()
-        self.canvas = tkinter.Canvas(self.fenster)
+        self.canvas = tkinter.Canvas(self.fenster, width=breite, height=hoehe)
         self.canvas.pack()
 
+        print("Erstelle Schläger")
         self.schlaeger_links = Schlaeger(self.canvas, (0, 10))
         self.schlaeger_links.start()
-        self.schlaeger_rechts = Schlaeger(self.canvas, (200, 10))
+        self.schlaeger_rechts = Schlaeger(self.canvas, (breite-10, 10))
         self.schlaeger_rechts.start()
 
-        self.ball = Ball(self.canvas, (10, 100))
+        print("Erstelle Ball")
+        self.ball = Ball(self.canvas, (10, 10))
         self.ball.start()
 
         btn = tkinter.Button(self.fenster, text="^", command=self.btn_up_click)
