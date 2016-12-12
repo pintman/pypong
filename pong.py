@@ -10,7 +10,6 @@ class Sprite:
                                                  position[0] + width_height[0],
                                                  position[1] + width_height[1],
                                                  fill="black")
-        print("Sprite erstellt", self.rect)
 
     def start(self):
         """Starte den Sprite. In jedem Zyklus wird die update-Methode
@@ -76,6 +75,8 @@ class Ball(Sprite):
         elemente = self.finde_ueberlappung()
         if len(elemente) > 0:
             self.dir[0] *= -1
+            self.dir[1] *= -1
+            # TODO Zufall für die y-Komponente hinzufügen
 
 
 class Pong:
@@ -84,14 +85,12 @@ class Pong:
         self.canvas = tkinter.Canvas(self.fenster, width=breite, height=hoehe)
         self.canvas.pack()
 
-        print("Erstelle Schläger")
-        self.schlaeger_links = Schlaeger(self.canvas, (0, 10))
+        self.schlaeger_links = Schlaeger(self.canvas, (0, hoehe/2))
         self.schlaeger_links.start()
-        self.schlaeger_rechts = Schlaeger(self.canvas, (breite-10, 10))
+        self.schlaeger_rechts = Schlaeger(self.canvas, (breite-10, hoehe/2))
         self.schlaeger_rechts.start()
 
-        print("Erstelle Ball")
-        self.ball = Ball(self.canvas, (10, 10))
+        self.ball = Ball(self.canvas, (breite/2, hoehe/2))
         self.ball.start()
 
         btn = tkinter.Button(self.fenster, text="^", command=self.btn_up_click)
