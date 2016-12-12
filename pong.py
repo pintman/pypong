@@ -50,6 +50,13 @@ class Sprite:
 
         self.canvas.move(self.rect, delta_x, delta_y)
 
+    def spielfeld_breite_hoehe(self):
+        """Liefert Breite und Höhe des Spielfeldes."""
+        breite = int(self.canvas["width"])
+        hoehe = int(self.canvas["height"])
+
+        return breite, hoehe
+
 
 class Schlaeger(Sprite):
     def __init__(self, canvas, position):
@@ -82,19 +89,14 @@ class Ball(Sprite):
             self.dir[1] *= -1
             self.dir[1] += random.randint(-1, +1)
 
-    def __canvas_breite_hoehe(self):
-        breite = int(self.canvas["width"])
-        hoehe = int(self.canvas["height"])
-
-        return breite, hoehe
-
     def _beruehrt_wand_oben_unten(self):
-        breite, hoehe = self.__canvas_breite_hoehe()
+        breite, hoehe = self.spielfeld_breite_hoehe()
 
         return (self.position()[0] < 0 or
                 self.position()[0] > breite or
                 self.position()[1] < 0 or
                 self.position()[1] > hoehe)
+
 
 class Pong:
     def __init__(self, breite=300, hoehe=200):
