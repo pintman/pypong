@@ -1,5 +1,6 @@
 import tkinter
 import threading
+import random
 
 
 class Sprite:
@@ -72,12 +73,28 @@ class Ball(Sprite):
     def update(self):
         self.bewegen(self.dir[0], self.dir[1])
 
+        if self._beruehrt_wand_oben_unten():
+            self.dir[1] *= -1
+
         elemente = self.finde_ueberlappung()
         if len(elemente) > 0:
             self.dir[0] *= -1
             self.dir[1] *= -1
-            # TODO Zufall für die y-Komponente hinzufügen
+            self.dir[1] += random.randint(-1, +1)
 
+    def __canvas_breite_hoehe(self):
+        breite = int(self.canvas["width"])
+        hoehe = int(self.canvas["height"])
+
+        return breite, hoehe
+
+    def _beruehrt_wand_oben_unten(self):
+        breite, hoehe = self.__canvas_breite_hoehe()
+
+        return (self.position()[0] < 0 or
+                self.position()[0] > breite or
+                self.position()[1] < 0 or
+                self.position()[1] > hoehe)
 
 class Pong:
     def __init__(self, breite=300, hoehe=200):
