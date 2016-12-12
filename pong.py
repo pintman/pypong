@@ -114,11 +114,19 @@ class Pong:
         self.ball = Ball(self.canvas, (breite/2, hoehe/2))
         self.ball.start()
 
-        btn = tkinter.Button(self.fenster, text="^", command=self.btn_up_click)
+        btn = tkinter.Button(self.fenster, text="<- ^",
+                             command=self.schlaeger_links.hoch)
         btn.pack()        
-        btn = tkinter.Button(self.fenster, text="v",
+        btn = tkinter.Button(self.fenster, text="<- v",
                              command=self.schlaeger_links.runter)
         btn.pack()        
+
+        btn = tkinter.Button(self.fenster, text="^ ->",
+                             command=self.schlaeger_rechts.hoch)
+        btn.pack()
+        btn = tkinter.Button(self.fenster, text="v ->",
+                             command=self.schlaeger_rechts.runter)
+        btn.pack()
 
         self.fenster.mainloop()
 
