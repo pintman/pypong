@@ -112,6 +112,7 @@ class Ball(Sprite):
 
         elemente = self.finde_ueberlappung()
         if len(elemente) > 0:
+            # TODO Punktzahl erhöhen
             self.direction[0] *= -1
             self.direction[1] *= -1
 
