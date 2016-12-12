@@ -75,7 +75,10 @@ class Schlaeger(Sprite):
 class Ball(Sprite):
     def __init__(self, canvas, position):
         super().__init__(canvas, position, (10, 10))
-        self.dir = [1, 0]
+        self.dir = [1,
+                    # y-Komponente zufällig wählen
+                    random.randint(-100, 100) / 100
+                    ]
 
     def update(self):
         self.bewegen(self.dir[0], self.dir[1])
@@ -87,7 +90,6 @@ class Ball(Sprite):
         if len(elemente) > 0:
             self.dir[0] *= -1
             self.dir[1] *= -1
-            self.dir[1] += random.randint(-1, +1)
 
     def _beruehrt_wand_oben_unten(self):
         breite, hoehe = self.spielfeld_breite_hoehe()
