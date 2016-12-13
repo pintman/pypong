@@ -47,7 +47,7 @@ class Sprite:
 
     def bewegen(self, delta_x, delta_y):
         """Bewege den Sprite um (delta_x, delta_y). Positive Werte bewegen nach
-        rechts, negative Werte nach links."""
+        rechts/unten, negative Werte nach links/oben."""
 
         self.canvas.move(self.rect, delta_x, delta_y)
 
