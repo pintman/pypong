@@ -157,7 +157,7 @@ class Pong:
 def main():
     eam_links = eapi.hw.EAModul()
     eam_rechts = eapi.hw.EAModul()
-    pong = Pong(eamodul_links=eam_links, eamodul_rechts=eam_rechts)
+    Pong(eamodul_links=eam_links, eamodul_rechts=eam_rechts)
 
 if __name__ == "__main__":
     main()
