@@ -128,32 +128,30 @@ class Ball(Sprite):
 class Pong:
     def __init__(self, eamodul_links, eamodul_rechts, breite=300, hoehe=200):
         fenster = tkinter.Tk()
+        fenster.bind("<Key>", self.taste_gedrueckt)
         canvas = tkinter.Canvas(fenster, width=breite, height=hoehe)
         canvas.pack()
 
-        schlaeger_links = Schlaeger(canvas, eamodul_links, (0, hoehe/2))
-        schlaeger_links.start()
-        schlaeger_rechts = Schlaeger(canvas, eamodul_rechts,
-                                     (breite-10, hoehe/2))
-        schlaeger_rechts.start()
+        self.schlaeger_links = Schlaeger(canvas, eamodul_links, (0, hoehe/2))
+        self.schlaeger_links.start()
+        self.schlaeger_rechts = Schlaeger(canvas, eamodul_rechts,
+                                          (breite-10, hoehe/2))
+        self.schlaeger_rechts.start()
 
         ball = Ball(canvas, (breite/2, hoehe/2))
         ball.start()
 
-        btn = tkinter.Button(fenster, text="<- ^", command=schlaeger_links.hoch)
-        btn.pack()        
-        btn = tkinter.Button(fenster, text="<- v",
-                             command=schlaeger_links.runter)
-        btn.pack()        
-
-        btn = tkinter.Button(fenster, text="^ ->",
-                             command=schlaeger_rechts.hoch)
-        btn.pack()
-        btn = tkinter.Button(fenster, text="v ->",
-                             command=schlaeger_rechts.runter)
-        btn.pack()
-
         fenster.mainloop()
+
+    def taste_gedrueckt(self, event):
+        if event.char == 'w':
+            self.schlaeger_links.hoch()
+        elif event.char == 's':
+            self.schlaeger_links.runter()
+        elif event.char == 'o':
+            self.schlaeger_rechts.hoch()
+        elif event.char == 'l':
+            self.schlaeger_rechts.runter()
 
 
 def main():
