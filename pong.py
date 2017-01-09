@@ -70,8 +70,29 @@ class Sprite:
 
 
 class Schlaeger(Sprite):
-    def __init__(self, canvas, ea_modul, position):
+    def __init__(self, canvas, position, width_heigth=(10, 50)):
+        super().__init__(canvas, position, width_heigth)
+
+    def hoch(self):
+        self.bewegen(0, -10)
+
+    def runter(self):
+        self.bewegen(0, +10)
+
+
+class TastaturSchlaeger(Schlaeger):
+    def __init__(self, canvas, position):
         super().__init__(canvas, position, (10, 50))
+
+    def update(self):
+        """Hier passiert nichts."""
+        pass
+
+
+class EAModulSchlaeger(Schlaeger):
+    """Ein Pong-Schläger, der über ein EA-Modul gesteuert werden kann."""
+    def __init__(self, canvas, ea_modul, position):
+        super().__init__(canvas, position)
         self.ea_modul = ea_modul
 
     def update(self):
@@ -88,12 +109,6 @@ class Schlaeger(Sprite):
             self.runter()
             if not self.innerhalb_spielfeld():
                 self.hoch()
-
-    def hoch(self):
-        self.bewegen(0, -10)
-        
-    def runter(self):
-        self.bewegen(0, +10)
 
 
 class Ball(Sprite):
@@ -132,11 +147,14 @@ class Pong:
         canvas = tkinter.Canvas(fenster, width=breite, height=hoehe)
         canvas.pack()
 
-        self.schlaeger_links = Schlaeger(canvas, eamodul_links, (0, hoehe/2))
-        self.schlaeger_links.start()
-        self.schlaeger_rechts = Schlaeger(canvas, eamodul_rechts,
-                                          (breite-10, hoehe/2))
-        self.schlaeger_rechts.start()
+        # self.schlaeger_links = EAModulSchlaeger(canvas, eamodul_links, (0, hoehe/2))
+        # self.schlaeger_links.start()
+        self.schlaeger_links = TastaturSchlaeger(canvas, (0, hoehe/2))
+
+        # self.schlaeger_rechts = EAModulSchlaeger(canvas, eamodul_rechts,
+        #                                  (breite-10, hoehe/2))
+        # self.schlaeger_rechts.start()
+        self.schlaeger_rechts = TastaturSchlaeger(canvas, (breite-10, hoehe/2))
 
         ball = Ball(canvas, (breite/2, hoehe/2))
         ball.start()
