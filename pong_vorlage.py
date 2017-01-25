@@ -1,5 +1,5 @@
 """
-Pong-Spiel aus dem Buch "RaspberryPi - Programmieren mit Python.
+Pong-Spiel aus dem Buch "RaspberryPi - Programmieren mit Python".
 """
 
 from tkinter import *
